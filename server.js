@@ -18,6 +18,22 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
+app.get("/emojify/:url/:name", function(req, res) {
+    try {
+        var url = req.param.url;
+        var name = req.param.name;
+
+        var data = {
+            "url": url,
+            "name": name
+        }
+
+        res.status(201).json(data);
+    } catch (err) {
+        handleError(err);
+    }
+});
+
 app.post("/emojify", function(req, res) {
     try {
         var url = req.body.url;
