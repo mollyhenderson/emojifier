@@ -13,3 +13,16 @@ var server = app.listen(process.env.PORT || 8080, function () {
 });
 
 // CONTACTS API ROUTES BELOW
+
+// Generic error handler used by all endpoints.
+function handleError(res, reason, message, code) {
+  console.log("ERROR: " + reason);
+  res.status(code || 500).json({"error": message});
+}
+
+app.post("/emojify", function(req, res) {
+    var url = req.body.url;
+    var name = req.body.name;
+
+    res.status(201);
+});
