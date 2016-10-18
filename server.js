@@ -24,5 +24,7 @@ app.post("/emojify", function(req, res) {
     var url = req.body.url;
     var name = req.body.name;
 
+    res.body("url: " + url + " name: " + name);
+
     res.status(201);
 });
