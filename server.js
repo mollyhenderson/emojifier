@@ -1,10 +1,8 @@
 var express = require("express");
 var path = require("path");
-var bodyParser = require("body-parser");
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
-app.use(bodyParser.json());
 
 // Initialize the app.
 var server = app.listen(process.env.PORT || 8080, function () {
@@ -24,7 +22,10 @@ app.post("/emojify", function(req, res) {
     var url = req.body.url;
     var name = req.body.name;
 
-    res.body("url: " + url + " name: " + name);
+    var data = {
+        "url": url,
+        "name": name
+    }
 
-    res.status(201);
+    res.status(201).json(data);
 });
