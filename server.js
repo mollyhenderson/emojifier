@@ -20,8 +20,8 @@ function handleError(res, reason, message, code) {
 
 app.get("/emojify/:url/:name", function(req, res) {
     try {
-        var url = req.param.url;
-        var name = req.param.name;
+        var url = req.params.url;
+        var name = req.params.name;
 
         var data = {
             "url": url,
