@@ -1,55 +1,14 @@
 {
-  "name": "emojipacks",
-  "description": "CLI to upload emojis to Slack",
-  "version": "0.0.5",
-  "author": "Andy Jiang",
-  "main": "./bin/emojipacks",
-  "keywords": [
-    "emojis",
-    "emoji",
-    "slack",
-    "chat",
-    "fun",
-    "lol",
-    "lols",
-    "lulz",
-    "derp",
-    "slacker",
-    "slackin",
-    "communication",
-    "emoticon",
-    "emoticons"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://www.github.com/lambtron/emojipacks"
-  },
-  "engines": {
-    "node": ">= 0.11.x",
-    "npm": ">= 2.5.x"
-  },
-  "preferGlobal": "true",
-  "bin": {
-    "emojipacks": "./bin/emojipacks"
+  "name": "Emojifier",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "dependencies": {
-    "chalk": "^1.1.0",
-    "cheerio": "^0.19.0",
-    "co": "^4.6.0",
-    "co-prompt": "^1.0.0",
-    "commander": "^2.8.1",
-    "debug": "^2.2.0",
-    "js-yaml": "^3.3.1",
-    "request": "^2.60.0",
-    "thunkify-wrap": "^1.0.4",
-    "valid-url": "^1.0.9"
-  },
-  "devDependencies": {
-    "grunt": "^0.4.3",
-    "grunt-yaml-validator": "^0.7.3",
-    "grunt-cli": "^0.1.13"
-  },
-  "scripts": {
-    "test": "grunt travis --verbose"
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3"
   }
 }
