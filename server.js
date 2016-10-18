@@ -19,13 +19,17 @@ function handleError(res, reason, message, code) {
 }
 
 app.post("/emojify", function(req, res) {
-    var url = req.body.url;
-    var name = req.body.name;
+    try {
+        var url = req.body.url;
+        var name = req.body.name;
 
-    var data = {
-        "url": url,
-        "name": name
+        var data = {
+            "url": url,
+            "name": name
+        }
+
+        res.status(201).json(data);
+    } catch (err) {
+        handleError(err);
     }
-
-    res.status(201).json(data);
 });
