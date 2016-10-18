@@ -44,7 +44,7 @@ app.post("/emojify", function(req, res) {
             "name": name
         }
 
-        res.status(201).json(data);
+        res.json(data);
     } catch (err) {
         handleError(err);
     }
