@@ -15,7 +15,7 @@ var server = app.listen(process.env.PORT || 8080, function () {
 // Generic error handler used by all endpoints.
 function handleError(res, reason, message, code) {
   console.log("ERROR: " + reason);
-  res.status(code || 500).json({"error": message});
+  res.json({"error": message});
 }
 
 app.get("/emojify/:url/:name", function(req, res) {
