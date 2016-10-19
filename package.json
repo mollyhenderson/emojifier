@@ -1,11 +1,20 @@
 {
-  "name": "Emojifier",
-  "version": "1.0.0",
+  "name": "emojifier",
   "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+  "version": "0.0.1",
+  "author": "Molly Henderson",
+  "main": "./bin/emojipacks",
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/mollyhenderson/emojifier"
+  },
+  "engines": {
+    "node": ">= 0.11.x",
+    "npm": ">= 2.5.x"
+  },
+  "preferGlobal": "true",
+  "bin": {
+    "emojifier": "./bin/emojifier"
   },
   "dependencies": {
     "body-parser": "^1.13.3",
