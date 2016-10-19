@@ -1,28 +1,12 @@
 {
-  "name": "emojipacks",
-  "description": "CLI to upload emojis to Slack",
-  "version": "0.0.5",
-  "author": "Andy Jiang",
+  "name": "emojifier",
+  "description": "",
+  "version": "0.0.1",
+  "author": "Molly Henderson",
   "main": "./bin/emojipacks",
-  "keywords": [
-    "emojis",
-    "emoji",
-    "slack",
-    "chat",
-    "fun",
-    "lol",
-    "lols",
-    "lulz",
-    "derp",
-    "slacker",
-    "slackin",
-    "communication",
-    "emoticon",
-    "emoticons"
-  ],
   "repository": {
     "type": "git",
-    "url": "https://www.github.com/lambtron/emojipacks"
+    "url": "https://www.github.com/mollyhenderson/emojifier"
   },
   "engines": {
     "node": ">= 0.11.x",
@@ -30,7 +14,7 @@
   },
   "preferGlobal": "true",
   "bin": {
-    "emojipacks": "./bin/emojipacks"
+    "emojifier": "./bin/emojifier"
   },
   "dependencies": {
     "chalk": "^1.1.0",
