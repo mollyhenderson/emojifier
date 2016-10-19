@@ -1,7 +1,7 @@
 var express = require("express");
 var path = require("path");
 var bodyParser = require('body-parser');
-var Slack = require('../lib/slack');
+var Slack = require('lib/slack');
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
