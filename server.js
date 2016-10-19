@@ -46,6 +46,8 @@ app.post("/emojify", function(req, res) {
     url = urlParts[0] + "//" + urlParts[2] + ".rsz.io/" + urlParts.slice(3).join('/') + "?mode=max&width=128&height=128";
     console.log(url);
 
+    upload();
+
     // upload to Slack
 
     var data = {
