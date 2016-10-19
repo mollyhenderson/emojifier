@@ -38,15 +38,15 @@ app.get("/emojify/:url/:name", function(req, res) {
 });
 
 app.post("/emojify", function(req, res) {
+    console.log("received post request");
     var url = req.body.url;
     var name = req.body.name;
 
     // resize the image
     var urlParts = url.split('/');
     url = urlParts[0] + "//" + urlParts[2] + ".rsz.io/" + urlParts.slice(3).join('/') + "?mode=max&width=128&height=128";
-    console.log(url);
 
-    upload();
+    upload(url, name);
 
     // upload to Slack
 
@@ -58,7 +58,7 @@ app.post("/emojify", function(req, res) {
     res.status(201).json(data);
 });
 
-function upload() {
+function upload(src, name) {
     console.log("upload time!");
 
   // var user = yield Prompt.start();
@@ -71,10 +71,12 @@ function upload() {
   // user.emojis = pack.emojis;
   user.emojis = [
       {
-          name: "kitten",
-          src: "http://static.boredpanda.com.rsz.io/blog/wp-content/uuuploads/cute-baby-animals-2/cute-baby-animals-2-2.jpg?mode=max&width=128&height=128"
+          name: name,
+          src: src
       }
   ];
+  console.log("emojis: ", user.emojis);
+
   var slack = new Slack(user, program.debug);
   yield slack.import();
   process.exit();
