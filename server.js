@@ -51,7 +51,7 @@ app.post("/emojify", function(req, res) {
 
 function resize(url) {
     var urlParts = url.split('/');
-    return urlParts[0] + "//" + urlParts[2] + ".rsz.io/" + urlParts.slice(3).join('/') + "?mode=max&width=128&height=128";
+    return "http://" + urlParts[2] + ".rsz.io/" + urlParts.slice(3).join('/') + "?mode=max&width=128&height=128";
 }
 
 function slackUrl(subdomain) {
