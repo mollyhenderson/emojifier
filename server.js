@@ -28,13 +28,13 @@ app.post("/emojify", function(req, res) {
     if(!(slackUrl(data.url) === slack.getUrl()) ||
         !(data.email === slack.getEmail()) ||
         !(data.password === slack.getPassword())) {
-      console.log(slackUrl(data.url));
+      console.log("input: " + slackUrl(data.url));
       console.log(slack.getUrl());
-      console.log(data.email);
+      console.log("input: " + data.email);
       console.log(slack.getEmail());
-      console.log(data.password);
+      console.log("input: " + data.password);
       console.log(slack.getPassword());
-      
+
       res.status(418).json("I'm picky, sorry. Also I don't like you.");
       return;
     }
@@ -45,7 +45,7 @@ app.post("/emojify", function(req, res) {
     }
 
     co(slack.import(emojis));
-    
+
     res.status(204).json("");
 });
 
