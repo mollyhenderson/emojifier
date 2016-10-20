@@ -1,12 +1,20 @@
 var express = require("express");
 var path = require("path");
 var bodyParser = require('body-parser');
-var Slack = require('lib/slack');
+var co = require('co');
+var Slack = require('./lib/slack');
+
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+var slack = new Slack({
+  url: slackUrl(process.env.SLACK_URL),
+  email: process.env.SLACK_EMAIL,
+  password: process.env.SLACK_PW
+});
 
 // Initialize the app.
 var server = app.listen(process.env.PORT || 8080, function () {
@@ -14,76 +22,36 @@ var server = app.listen(process.env.PORT || 8080, function () {
   console.log("App now running on port", port);
 });
 
-// CONTACTS API ROUTES BELOW
-
-// Generic error handler used by all endpoints.
-function handleError(res, reason, message, code) {
-  console.log("ERROR: " + reason);
-  res.status(code || 500).json({"error": message});
-}
-
-app.get("/emojify/:url/:name", function(req, res) {
-    try {
-        var url = req.params.url;
-        var name = req.params.name;
-
-        var data = {
-            "url": url,
-            "name": name
-        }
-
-        res.status(201).json(data);
-    } catch (err) {
-        handleError(err);
-    }
-});
-
 app.post("/emojify", function(req, res) {
-    console.log("received post request");
-    var url = req.body.url;
-    var name = req.body.name;
+    var data = req.body;
 
-    // resize the image
-    var urlParts = url.split('/');
-    url = urlParts[0] + "//" + urlParts[2] + ".rsz.io/" + urlParts.slice(3).join('/') + "?mode=max&width=128&height=128";
-
-    upload(url, name);
-
-    // upload to Slack
-
-    var data = {
-        "url": url,
-        "name": name
+    if(!(slackUrl(data.url) === slack.getUrl()) ||
+        !(data.email === slack.getEmail()) ||
+        !(data.password === slack.getPassword())) {
+      res.status(418).json("I'm picky, sorry. Also I don't like you.");
+      return;
     }
 
-    res.status(201).json(data);
+    var emojis = data.emojis;
+    for (var i = 0; i < Object.keys(emojis).length; i++) {
+      emojis[i].src = resize(emojis[i].src);
+    }
+
+    co(upload(emojis));
+
+    res.status(204).json("");
 });
 
-function upload(src, name) {
-    console.log("upload time!");
-
-  // var user = yield Prompt.start();
-  var user = {
-      url: url("crosschx"),
-      email: "molly.henderson+emojifier@crosschx.com",
-      password: "Test1234"
-  }
-  // var pack = yield Pack.get(user.pack);
-  // user.emojis = pack.emojis;
-  user.emojis = [
-      {
-          name: name,
-          src: src
-      }
-  ];
-  console.log("emojis: ", user.emojis);
-
-  var slack = new Slack(user, program.debug);
-  yield slack.import();
-  process.exit();
+function* upload(data) {
+    // var slack = new Slack(data);
+    yield slack.import(data.emojis);
 }
 
+function resize(url) {
+    var urlParts = url.split('/');
+    return urlParts[0] + "//" + urlParts[2] + ".rsz.io/" + urlParts.slice(3).join('/') + "?mode=max&width=128&height=128";
+}
 
-function url(subdomain) {
-  return 'https://' + subdomain + '.slack.com';
+function slackUrl(subdomain) {
+    return 'https://' + subdomain + '.slack.com';
 }
