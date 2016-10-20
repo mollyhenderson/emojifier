@@ -28,6 +28,13 @@ app.post("/emojify", function(req, res) {
     if(!(slackUrl(data.url) === slack.getUrl()) ||
         !(data.email === slack.getEmail()) ||
         !(data.password === slack.getPassword())) {
+      console.log(slackUrl(data.url));
+      console.log(slack.getUrl());
+      console.log(data.email);
+      console.log(slack.getEmail());
+      console.log(data.password);
+      console.log(slack.getPassword());
+      
       res.status(418).json("I'm picky, sorry. Also I don't like you.");
       return;
     }
