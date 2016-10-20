@@ -37,15 +37,10 @@ app.post("/emojify", function(req, res) {
       emojis[i].src = resize(emojis[i].src);
     }
 
-    co(upload(emojis));
-
+    co(slack.import(emojis));
+    
     res.status(204).json("");
 });
-
-function* upload(data) {
-    // var slack = new Slack(data);
-    yield slack.import(data.emojis);
-}
 
 function resize(url) {
     var urlParts = url.split('/');
