@@ -19,7 +19,7 @@ var emojiUploadImagePath = '/customize/emoji';
  * Initialize a new `Slack`.
  */
 function Slack(data) {
-  if (!(this instanceof Slack)) return new Slack(opts);
+  if (!(this instanceof Slack)) return new Slack(data);
   this.opts = data;
 
   this.getUrl = function() {
