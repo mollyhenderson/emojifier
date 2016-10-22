@@ -10,4 +10,4 @@ server.use(restify.bodyParser());
 require('./app/controller/emojify')(server);
 require('./app/controller/emojifyFromSlack')(server);
 
-server.listen(8080);
+server.listen(process.env.PORT || 8080)
