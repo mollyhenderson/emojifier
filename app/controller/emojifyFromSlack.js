@@ -12,6 +12,7 @@ function emojifyFromSlack(server) {
     console.log("Received POST request from Slack: ", req);
     const body = req.body;
     let emojis;
+    const body = req.params;
     try {
       securityCheck.validateToken(body.token);
       emojis = parsingService.parseSlackMessage(body);
