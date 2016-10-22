@@ -10,7 +10,6 @@ const trollService = require('../service/trollService');
 function emojifyFromSlack(server) {
   server.post('/slack/emojify', (req, res, next) => {
     console.log("Received POST request from Slack: ", req);
-    const body = req.body;
     let emojis;
     const body = req.params;
     try {
