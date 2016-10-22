@@ -7,6 +7,7 @@ const server = restify.createServer();
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
-require('./app/controller/emojifier')(server);
+require('./app/controller/emojify')(server);
+require('./app/controller/emojifyFromSlack')(server);
 
 server.listen(8080);
