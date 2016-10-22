@@ -7,8 +7,9 @@ function validateToken(token) {
   // make sure this call is at least probably coming from our webhook ¯\_(ツ)_/¯
   if(token !== process.env.SLACK_TOKEN) {
     const slackMessage = {
-      text: "You're not allowed to access this, go away!"
+      text: "Sorry, I don't really want to talk to you.\n(Your teammate probably didn't set up my permissions correctly; go yell at them!)"
     };
+    console.log("Token denied: ", token);
     // look, ok, I see it. But Slack retries all non-200 calls multiple times; we want it to think everything's fine.
     throw new HttpError(200, slackMessage);
   }
