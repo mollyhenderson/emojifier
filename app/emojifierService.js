@@ -1,7 +1,6 @@
 'use strict'
 
 const request = require('request');
-const co = require('co');
 
 const slack = new require('./slack')({
   url: slackUrl(process.env.SLACK_URL),
@@ -9,7 +8,7 @@ const slack = new require('./slack')({
   password: process.env.SLACK_PW
 });
 
-function emojify(options) {
+function* emojify(options) {
   const url = options.url;
   const email = options.email;
   const password = options.password;
@@ -25,7 +24,7 @@ function emojify(options) {
     emojis[i].src = resize(emojis[i].src);
   }
 
-  co(slack.import(emojis));
+  yield slack.import(emojis);
 
   let returnValue = "";
   for (var i = 0; i < Object.keys(emojis).length; i++) {

@@ -108,7 +108,6 @@ function Slack(data) {
   /**
    * Get the emoji upload page.
    */
-
   this.emoji = function *() {
     var opts = this.opts;
     var load = {
