@@ -1,0 +1,13 @@
+{
+  "token": "tokentokentoken",
+  "team_id": "TEAMCOOL",
+  "team_domain": "cool",
+  "service_id": "10101010101",
+  "channel_id": "THISISACHANNEL",
+  "channel_name": "channelchannel",
+  "timestamp": "1476847973.000031",
+  "user_id": "USERID1",
+  "user_name": "test.testerson",
+  "text": "emojify http://static.boredpanda.com/blog/wp-content/uuuploads/cute-baby-animals-2/cute-baby-animals-2-2.jpg as kitten",
+  "trigger_word": "emojify"
+}

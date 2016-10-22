@@ -1,19 +1,14 @@
+'use strict';
 
-var cheerio = require('cheerio');
-var thunkify = require('thunkify-wrap');
-var request = thunkify(require('request'));
-var req = require('request');
-var fs = require('fs');
+const cheerio = require('cheerio');
+const thunkify = require('thunkify-wrap');
+const request = thunkify(require('request'));
+const req = require('request');
+const fs = require('fs');
 
-
-module.exports = Slack;
-
-/**
- * Static variables
- */
-var loginFormPath = '/?no_sso=1';
-var emojiUploadFormPath = '/admin/emoji';
-var emojiUploadImagePath = '/customize/emoji';
+const loginFormPath = '/?no_sso=1';
+const emojiUploadFormPath = '/admin/emoji';
+const emojiUploadImagePath = '/customize/emoji';
 
 /**
  * Initialize a new `Slack`.
@@ -38,6 +33,7 @@ function Slack(data) {
   this.import = function *(emojis) {
     this.opts.emojis = emojis;
 
+    // FIXME: this is a kludgy way to log into Slack once and leave it running.
     if(!this.opts.uploadCrumb) {
       yield this.init();
     }
@@ -149,3 +145,5 @@ function Slack(data) {
   };
 
 }
+
+module.exports = Slack;
