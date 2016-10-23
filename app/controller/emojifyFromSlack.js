@@ -28,8 +28,7 @@ function emojifyFromSlack(server) {
     }
 
     if(message.type === "help") {
-      slackResponse.text = 'Hi there @' + body.user_name + ', let\'s make some emojis together! \
-                            Try typing "' + body.trigger_word + ' <url> as <emoji_name>"!';
+      slackResponse.text = 'Hi there @' + body.user_name + ', let\'s make some emojis together!\nTry typing `' + body.trigger_word + ' <url> as <emoji_name>`!';
       res.send(200, slackResponse);
       return next();
     }

@@ -1,5 +1,6 @@
 'use strict';
 
+const url = require('url');
 const HttpError = require('../util/httpError');
 
 function parseSlackMessage(body) {
@@ -32,6 +33,12 @@ function parseSlackMessage(body) {
   }
 }
 
+function parseUrl(urlString) {
+  urlString = urlString.replace(/[<>]/g, '')
+  return url.parse(urlString);
+}
+
 module.exports = {
-  parseSlackMessage
+  parseSlackMessage,
+  parseUrl
 };
