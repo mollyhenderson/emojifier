@@ -15,6 +15,9 @@ function emojifyFromSlack(server) {
     const body = req.params;
     console.log('Received POST request from Slack; message is "' + body.text + '" from ' + body.user_name);
 
+    let slackResponse = {
+      parse: full
+    }
     let message;
     try {
       securityCheck.validateToken(body.token);
@@ -25,18 +28,17 @@ function emojifyFromSlack(server) {
     }
 
     if(message.type === "help") {
-      res.send(200, {text: 'Hi there @' + body.user_name + ', let\'s make some emojis together! Try typing "' + body.trigger_word + ' <url> as <emoji_name>"!'});
+      slackResponse.text = 'Hi there @' + body.user_name + ', let\'s make some emojis together! \
+                            Try typing "' + body.trigger_word + ' <url> as <emoji_name>"!';
+      res.send(200, slackResponse);
       return next();
     }
 
     co(emojiService.emojify(message.emojis))
     .then(
       function(value) {
-        let slackResonse = {
-          text: value,
-          parse: full
-        }
-        res.send(200, trollService.troll(slackResonse, body));
+        slackResponse.text = value;
+        res.send(200, trollService.troll(slackResponse, body));
       },
       function(err) {
         return errorHandler.handleError(err, res, next);
