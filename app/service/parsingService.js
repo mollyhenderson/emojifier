@@ -17,7 +17,8 @@ function parseSlackMessage(body) {
   }
 
   if(messageParts.length < 2) {
-    throw new HttpError(400, {text: "I'm afraid I don't understand your request, sorry. :shrug_bot:"});
+    // I'm so sorry for doing this
+    throw new HttpError(200, {text: "I'm afraid I don't understand your request, sorry. :shrug_bot:"});
   }
 
   const src = messageParts[0];
