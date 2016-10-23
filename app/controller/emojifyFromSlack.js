@@ -33,7 +33,8 @@ function emojifyFromSlack(server) {
     .then(
       function(value) {
         let slackResonse = {
-          text: value
+          text: value,
+          parse: full
         }
         res.send(200, trollService.troll(slackResonse, body));
       },
