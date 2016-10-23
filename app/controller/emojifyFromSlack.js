@@ -16,8 +16,8 @@ function emojifyFromSlack(server) {
     console.log('Received POST request from Slack; message is "' + body.text + '" from ' + body.user_name);
 
     let slackResponse = {
-      parse: full
-    }
+      parse: 'full'
+    };
     let message;
     try {
       securityCheck.validateToken(body.token);
