@@ -11,17 +11,25 @@ function parseSlackMessage(body) {
     messageParts.shift();
   }
 
+  if(messageParts[0] === "help") {
+    return {type: "help"};
+  }
+
   if(messageParts.length < 2) {
-    throw new HttpError(400, "I'm afraid I don't understand your request, sorry. :shrug_bot:");
+    throw new HttpError(400, {text: "I'm afraid I don't understand your request, sorry. :shrug_bot:"});
   }
 
   const src = messageParts[0];
   const emojiName = messageParts[1] === 'as' ? messageParts[2] : messageParts[1];
 
-  return [{
+  const emojis = [{
     name: emojiName,
     src: src
   }];
+  return {
+    type: "emojis",
+    emojis: emojis
+  }
 }
 
 module.exports = {

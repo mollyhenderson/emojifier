@@ -8,19 +8,28 @@ const parsingService = require('../service/parsingService');
 const trollService = require('../service/trollService');
 
 function emojifyFromSlack(server) {
+
+  // TODO: accept attached images?
+
   server.post('/slack/emojify', (req, res, next) => {
-    console.log("Received POST request from Slack: ", req);
-    let emojis;
     const body = req.params;
+    console.log('Received POST request from Slack; message is "' + body.text + '" from ' + body.user_name);
+
+    let message;
     try {
       securityCheck.validateToken(body.token);
-      emojis = parsingService.parseSlackMessage(body);
+      message = parsingService.parseSlackMessage(body);
     }
     catch(err) {
       return errorHandler.handleError(err, res, next);
     }
 
-    co(emojiService.emojify(emojis))
+    if(message.type === "help") {
+      res.send(200, {text: 'Hi there @' + body.user_name + ', let\'s make some emojis together! Try typing "' + body.trigger_word + ' <url> as <emoji_name>"!'});
+      return next();
+    }
+
+    co(emojiService.emojify(message.emojis))
     .then(
       function(value) {
         let slackResonse = {
