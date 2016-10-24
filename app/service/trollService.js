@@ -1,29 +1,31 @@
 'use strict';
 
 function troll(response, reqBody) {
-  if(reqBody.user_name === "ian.gall") {
-    response.icon_emoji = ":ianizer:";
-  }
-  if(reqBody.user_name === "mason") {
-    response.icon_emoji = ":dangerzone:";
-  }
-  if(reqBody.user_name === "matt.dreiss") {
-    response.icon_emoji = ":beckyg:";
-  }
-  if(reqBody.user_name === "michael.mccarrick") {
-    response.icon_emoji = ":mikermit:";
-  }
-  if(reqBody.user_name === "james.smith") {
-    response.icon_emoji = ":jamden_smith:";
-  }
-  if(reqBody.user_name === "jayclouse") {
-    response.icon_emoji = ":juicy:";
-  }
-  if(reqBody.user_name === "tyler.dennis") {
-    response.icon_emoji = ":fiesta_dennis:";
-  }
-  if(reqBody.user_name === "brad.myers") {
-    response.icon_emoji = ":smug-trump:";
+  switch(reqBody.user_name) {
+    case 'ian.gall':
+      response.icon_emoji = ":ianizer:";
+      break;
+    case 'mason':
+      response.icon_emoji = ":dangerzone:";
+      break;
+    case 'matt.dreiss':
+      response.icon_emoji = ":beckyg:";
+      break;
+    case 'michael.mccarrick':
+      response.icon_emoji = ":yay:";
+      break;
+    case 'james.smith':
+      response.icon_emoji = ":jamden_smith:";
+      break;
+    case 'jayclouse':
+      response.icon_emoji = ":juicy:";
+      break;
+    case 'tyler.dennis':
+      response.icon_emoji = ":fiesta_dennis:";
+      break;
+    case 'brad.myers':
+      response.icon_emoji = ":smug-trump:";
+      break;
   }
   return response;
 }

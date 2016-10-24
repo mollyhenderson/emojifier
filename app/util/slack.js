@@ -36,9 +36,10 @@ function Slack(data) {
       var uploadWorked = $('.emoji_row > td:nth-child(2)', '#custom_emoji').is(uploaded);
       if(!uploadWorked) {
         throw new HttpError(200, "Error occurred while uploading your requested emoji. Some possible reasons:\
+\n\t- The url must refer to an image\
 \n\t- The image cannot require authentication\
 \n\t- The image cannot be too large\
-\nIf you don't think either of these cases applies to you, give a shout to Molly to let her know something weird is happening! :alarm:");
+\nIf you don't think any of these cases applies to you, give a shout to Molly to let her know something weird is happening! :alarm:");
       }
     }
     console.log('Uploaded emojis');
