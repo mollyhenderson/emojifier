@@ -1,6 +1,6 @@
 'use strict';
 
-const HttpError = require('../util/HttpError');
+const HttpError = require('../util/httpError');
 const Slack = require('../util/slack');
 
 const url = process.env.SLACK_URL;
