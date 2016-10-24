@@ -2,6 +2,7 @@
 
 const co = require('co');
 const errorHandler = require('../util/errorHandler');
+const HttpError = require('../util/httpError');
 const securityCheck = require('../util/securityCheck');
 const emojiService = require('../service/emojiService');
 const parsingService = require('../service/parsingService');
@@ -24,7 +25,7 @@ function emojifyFromSlack(server) {
       message = parsingService.parseSlackMessage(body);
     }
     catch(err) {
-      return errorHandler.handleError(err, res, next);
+      return errorHandler.handleErrorForSlack(err, res, next);
     }
 
     if(message.type === "help") {
@@ -40,7 +41,7 @@ function emojifyFromSlack(server) {
         res.send(200, trollService.troll(slackResponse, body));
       },
       function(err) {
-        return errorHandler.handleError(err, res, next);
+        return errorHandler.handleErrorForSlack(err, res, next);
       });
 
     return next();

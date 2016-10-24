@@ -1,6 +1,7 @@
 'use strict';
 
 const cheerio = require('cheerio');
+const co = require('co');
 const thunkify = require('thunkify-wrap');
 const request = thunkify(require('request'));
 const req = require('request');
@@ -17,27 +18,13 @@ function Slack(data) {
   if (!(this instanceof Slack)) return new Slack(data);
   this.opts = data;
 
-  this.getUrl = function() {
-    return this.opts.url;
-  }
-  this.getEmail = function() {
-    return this.opts.email;
-  }
-  this.getPassword = function() {
-    return this.opts.password;
-  }
-
   /**
    * Do everything.
    */
   this.import = function *(emojis) {
     this.opts.emojis = emojis;
-
-    // FIXME: this is a kludgy way to log into Slack once and leave it running.
-    if(!this.opts.uploadCrumb) {
-      yield this.init();
-    }
     console.log('Getting emoji page');
+    
     for (var i = 0; i < Object.keys(this.opts.emojis).length; i++) {
       var e = this.opts.emojis[i];
       var uploadRes = yield this.upload(e.name, e.src);
@@ -54,7 +41,8 @@ function Slack(data) {
       yield this.login();
       console.log('Logged in');
       yield this.emoji();
-    } catch (e) {
+    }
+    catch (e) {
       console.log('Uh oh! ' + e);
       throw e;
     }
@@ -143,6 +131,8 @@ function Slack(data) {
       form.append('img', req(emoji));
     }.bind(this));
   };
+
+  co(this.init());
 
 }
 

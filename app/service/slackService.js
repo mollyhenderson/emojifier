@@ -13,7 +13,14 @@ const slack = new Slack({
 });
 
 function* importEmojis(emojis) {
-  yield slack.import(emojis);
+  try {
+    yield slack.import(emojis);
+  }
+  catch(err) {
+    // Q: why?
+    // A: don't you think there would be a better comment here if I knew that??
+    throw new Error(err);
+  }
 }
 
 function slackUrl(subdomain) {
