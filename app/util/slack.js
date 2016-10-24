@@ -132,11 +132,12 @@ function Slack(data) {
     };
     var res = yield request(load);
     var $ = cheerio.load(res[0].body);
-
+    
+    // TODO: also check non-custom emojis?
     const alreadyExists = R.curry(emojiExists)($, name);
     var duplicate = $('.emoji_row > td:nth-child(2)', '#custom_emoji').is(alreadyExists);
     if(duplicate) {
-      throw new HttpError(200, "Oops, looks like that name is already an emoji! :" + name + ": Try again with a different name. :yes2:")
+      throw new HttpError(200, "Oops, looks like an emoji with that name already exists: :" + name + ": Try again with a different name. :yes2:")
     }
 
     return new Promise(function(resolve, reject, notify) {
