@@ -35,17 +35,25 @@ function parseSlackMessage(body) {
 
 function parseUrl(urlString) {
   urlString = urlString.replace(/[<>]/g, '');
-  if(!imageUrl(urlString)) {
-    throw new HttpError(200, "Actually, I can only handle `.jpg`, `.jpeg`, or `.png` file extensions for now. Sorry about that!");
+  if(!validUrl(urlString)) {
+    throw new HttpError(200, "Actually, I can only handle `.jpg`, `.jpeg`, or `.png` file extensions for now. :booo: Sorry about that!");
   }
   return url.parse(urlString);
 }
 
-function imageUrl(urlString) {
-  return(urlString.match(/\.(jpeg|jpg|png)$/) != null);
+function validUrl(urlString) {
+  return urlString.match(/\.(jpeg|jpg|png)$/) != null;
+}
+
+function validName(name) {
+  if(name.match(/^[\da-z_-]+$/g) === null) {
+    throw new HttpError(200, name + " is an invalid name. Custom emoji names can only contain lower case letters, numbers, dashes and underscores. Try again! :dealwithit:");
+  }
+  return name;
 }
 
 module.exports = {
   parseSlackMessage,
-  parseUrl
+  parseUrl,
+  validName
 };

@@ -1,5 +1,6 @@
 'use strict';
 
+const HttpError = require('../util/HttpError');
 const Slack = require('../util/slack');
 
 const url = process.env.SLACK_URL;
@@ -17,6 +18,9 @@ function* importEmojis(emojis) {
     yield slack.import(emojis);
   }
   catch(err) {
+    if(err instanceof HttpError) {
+      throw err;
+    }
     // Q: why?
     // A: don't you think there would be a better comment here if I knew that??
     throw new Error(err);

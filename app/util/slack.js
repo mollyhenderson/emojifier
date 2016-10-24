@@ -2,13 +2,17 @@
 
 const cheerio = require('cheerio');
 const co = require('co');
+const R = require('ramda');
 const thunkify = require('thunkify-wrap');
 const request = thunkify(require('request'));
 const req = require('request');
+const HttpError = require('./httpError');
 
 const loginFormPath = '/?no_sso=1';
 const emojiUploadFormPath = '/admin/emoji';
 const emojiUploadImagePath = '/customize/emoji';
+
+const emojiExists = ($, name, i, elem) => $(elem).text().replace(/\s|:|`/g, '') === name;
 
 /**
  * Initialize a new `Slack`.
@@ -23,10 +27,19 @@ function Slack(data) {
   this.import = function *(emojis) {
     this.opts.emojis = emojis;
     console.log('Getting emoji page');
-    
+
     for (var i = 0; i < Object.keys(this.opts.emojis).length; i++) {
       var e = this.opts.emojis[i];
       var uploadRes = yield this.upload(e.name, e.src);
+      var $ = cheerio.load(uploadRes);
+      const uploaded = R.curry(emojiExists)($, e.name);
+      var uploadWorked = $('.emoji_row > td:nth-child(2)', '#custom_emoji').is(uploaded);
+      if(!uploadWorked) {
+        throw new HttpError(200, "Error occurred while uploading your requested emoji. Some possible reasons:\
+\n\t- The image cannot require authentication\
+\n\t- The image cannot be too large\
+\nIf you don't think either of these cases applies to you, give a shout to Molly to let her know something weird is happening! :alarm:");
+      }
     }
     console.log('Uploaded emojis');
     return 'Success';
@@ -110,7 +123,22 @@ function Slack(data) {
    * Upload the emoji.
    */
   this.upload = function *(name, emoji) {
-    console.log('Uploading %s with %s', name, emoji);
+    console.log('Attempting to upload %s with %s', name, emoji);
+    var opts = this.opts;
+    var load = {
+      url: opts.url + emojiUploadFormPath,
+      jar: opts.jar,
+      method: 'GET'
+    };
+    var res = yield request(load);
+    var $ = cheerio.load(res[0].body);
+
+    const alreadyExists = R.curry(emojiExists)($, name);
+    var duplicate = $('.emoji_row > td:nth-child(2)', '#custom_emoji').is(alreadyExists);
+    if(duplicate) {
+      throw new HttpError(200, "Oops, looks like that name is already an emoji! :" + name + ": Try again with a different name. :yes2:")
+    }
+
     return new Promise(function(resolve, reject, notify) {
       var opts = this.opts;
       var r = req({

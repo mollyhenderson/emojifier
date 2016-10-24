@@ -15,7 +15,7 @@ function handleErrorForSlack(err, res, next) {
   else {
     console.log("[INTERNAL ERROR]:", err);
     const genericErrorMessage = {
-      text: "I'm feeling a little drowsy, maybe try again?\nIf that doesn't work, you should probably bother @molly.henderson until she fixes it!",
+      text: "I'm feeling a little drowsy, maybe try again? :sleepy_ian:\nIf that doesn't work, you should probably bother @molly.henderson until she fixes it!",
       parse: "full"
     }
     // look, ok, I see it. But Slack retries all non-200 calls multiple times; we want it to think everything's fine.
