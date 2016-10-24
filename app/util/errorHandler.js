@@ -18,6 +18,7 @@ function handleErrorForSlack(err, res, next) {
       text: "I'm feeling a little drowsy, maybe try again?\nIf that doesn't work, you should probably bother @molly.henderson until she fixes it!",
       parse: "full"
     }
+    // look, ok, I see it. But Slack retries all non-200 calls multiple times; we want it to think everything's fine.
     err = new HttpError(200, genericErrorMessage);
   }
   return handleError(err, res, next);

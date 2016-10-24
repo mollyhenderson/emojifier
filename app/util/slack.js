@@ -5,7 +5,6 @@ const co = require('co');
 const thunkify = require('thunkify-wrap');
 const request = thunkify(require('request'));
 const req = require('request');
-const fs = require('fs');
 
 const loginFormPath = '/?no_sso=1';
 const emojiUploadFormPath = '/admin/emoji';

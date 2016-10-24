@@ -2,7 +2,6 @@
 
 const co = require('co');
 const errorHandler = require('../util/errorHandler');
-const HttpError = require('../util/httpError');
 const securityCheck = require('../util/securityCheck');
 const emojiService = require('../service/emojiService');
 const parsingService = require('../service/parsingService');

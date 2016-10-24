@@ -17,7 +17,6 @@ function parseSlackMessage(body) {
   }
 
   if(messageParts.length < 2) {
-    // I'm so sorry for doing this
     throw new HttpError(200, "I'm afraid I don't understand your request, sorry. :shrug_bot:\nTry typing `' + body.trigger_word + ' <url> as <emoji_name>`.");
   }
 

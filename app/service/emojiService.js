@@ -1,7 +1,6 @@
 'use strict';
 
 const R = require('ramda');
-const HttpError = require('../util/httpError');
 const parsingService = require('../service/parsingService');
 const slackService = require('../service/slackService');
 
