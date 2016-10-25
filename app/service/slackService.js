@@ -1,16 +1,13 @@
 'use strict';
 
+const constants = require('../util/constants');
 const HttpError = require('../util/httpError');
 const Slack = require('../util/slack');
 
-const url = process.env.SLACK_URL;
-const email = process.env.SLACK_EMAIL;
-const password = process.env.SLACK_PW;
-
 const slack = new Slack({
-  url: slackUrl(url),
-  email: email,
-  password: password
+  url: slackUrl(constants.SLACK_URL),
+  email: constants.SLACK_EMAIL,
+  password: constants.SLACK_PW
 });
 
 function* importEmojis(emojis) {
@@ -32,8 +29,5 @@ function slackUrl(subdomain) {
 }
 
 module.exports = {
-  url,
-  email,
-  password,
   importEmojis
 };

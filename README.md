@@ -1,6 +1,6 @@
 `emojify <url> as <name>`
+`aliasify <existing_emoji> as <name>`
 
 Suggested improvements:
 * Allow for gif emojis
-* Support aliasing
-* Support emojfiying attachments
+* Support emojifying attachments

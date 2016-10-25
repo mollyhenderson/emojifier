@@ -1,46 +1,59 @@
 'use strict';
 
 const url = require('url');
+const constants = require('../util/constants');
 const HttpError = require('../util/httpError');
 
 function parseSlackMessage(body) {
-  // sample body.text: 'emojify {IMAGE_SRC} as {EMOJI_NAME}'
-  // also supports leaving off the 'as'
+  // sample body.text: 'emojify <url> as <name>'
+  //   or: 'aliasify <existing_emoji> as <name>'
   let messageParts = body.text.split(' ');
 
   if(messageParts[0] === body.trigger_word) {
     messageParts.shift();
   }
 
-  if(messageParts[0] === "help") {
-    return {type: "help"};
+  if(messageParts[0] === 'help') {
+    return {type: 'help'};
   }
 
-  if(messageParts[0] === "hello" || messageParts[0] === "hi") {
-    return {type: "hello"};
+  if(messageParts[0] === 'hello' || messageParts[0] === 'hi' | messageParts[0] === 'hey') {
+    return {type: 'hello'};
   }
 
-  if(messageParts.length < 2) {
-    throw new HttpError(200, "I'm afraid I don't understand your request, sorry. :shrug_bot:\nTry typing `" + body.trigger_word + " <url> as <emoji_name>`.");
+  if(messageParts.length != 3 || messageParts[1] !== 'as') {
+    throw new HttpError(200, constants.DONT_UNDERSTAND_MESSAGE);
   }
 
-  const src = messageParts[0];
-  const emojiName = messageParts[1] === 'as' ? messageParts[2] : messageParts[1];
+  const emojiName = messageParts[2];
+  const otherPart = messageParts[0];
 
-  const emojis = [{
-    name: emojiName,
-    src: src
-  }];
+  const emoji = {
+    name: emojiName
+  };
+
+  const creatingAlias = body.trigger_word === constants.ALIAS_TRIGGER;
+  if(creatingAlias) {
+    emoji.alias = otherPart;
+  }
+  else {
+    emoji.src = otherPart;
+  }
+
   return {
-    type: "emojis",
-    emojis: emojis
+    type: 'emojis',
+    emojis: [emoji]
   }
+}
+
+function parseName(alias) {
+  return alias.replace(/[\s:]/g, '');
 }
 
 function parseUrl(urlString) {
   urlString = urlString.replace(/[<>]/g, '');
   if(!validUrl(urlString)) {
-    throw new HttpError(200, "Actually, I can only handle `.jpg`, `.jpeg`, or `.png` file extensions for now. :booo: Sorry about that!");
+    throw new HttpError(200, constants.FILE_FORMAT_ERROR_MESSAGE);
   }
   return url.parse(urlString);
 }
@@ -51,13 +64,14 @@ function validUrl(urlString) {
 
 function validName(name) {
   if(name.match(/^[\da-z_-]+$/g) === null) {
-    throw new HttpError(200, name + " is an invalid name. Custom emoji names can only contain lower case letters, numbers, dashes and underscores. Try again! :dealwithit:");
+    throw new HttpError(200, constants.INVALID_NAME_MESSAGE_FN(name));
   }
   return name;
 }
 
 module.exports = {
   parseSlackMessage,
+  parseName,
   parseUrl,
   validName
 };

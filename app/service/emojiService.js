@@ -4,11 +4,12 @@ const R = require('ramda');
 const parsingService = require('../service/parsingService');
 const slackService = require('../service/slackService');
 
-const resizeEmojiTransformations = {
+const emojiTransformations = {
   src: R.compose(resize, parsingService.parseUrl),
-  name: parsingService.validName
+  name: R.compose(parsingService.validName, parsingService.parseName),
+  alias: R.compose(parsingService.validName, parsingService.parseName)
 };
-const evolveEmoji = emoji => R.evolve(resizeEmojiTransformations, emoji);
+const evolveEmoji = emoji => R.evolve(emojiTransformations, emoji);
 const prettyPrintEmoji = emoji => ':' + emoji.name + ':';
 const prettyPrintEmojis = emojis => R.join(' ', R.map(prettyPrintEmoji, emojis));
 

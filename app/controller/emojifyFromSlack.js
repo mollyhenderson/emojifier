@@ -1,6 +1,7 @@
 'use strict';
 
 const co = require('co');
+const constants = require('../util/constants');
 const errorHandler = require('../util/errorHandler');
 const securityCheck = require('../util/securityCheck');
 const emojiService = require('../service/emojiService');
@@ -8,9 +9,6 @@ const parsingService = require('../service/parsingService');
 const trollService = require('../service/trollService');
 
 function emojifyFromSlack(server) {
-
-  // TODO: accept attached images?
-
   server.post('/slack/emojify', (req, res, next) => {
     const body = req.params;
     console.log('Received POST request from Slack; message is "' + body.text + '" from ' + body.user_name);
@@ -28,13 +26,13 @@ function emojifyFromSlack(server) {
     }
 
     if(message.type === "help") {
-      slackResponse.text = 'Hi there @' + body.user_name + ', let\'s make some emojis together!\nTry typing `' + body.trigger_word + ' <url> as <emoji_name>`.';
+      slackResponse.text = constants.HELP_MESSAGE_FN(body.user_name);
       res.send(200, slackResponse);
       return next();
     }
 
     if(message.type === "hello") {
-      slackResponse.text = 'Hi there @' + body.user_name + '! :wave: :yay:';
+      slackResponse.text = constants.HELLO_MESSAGE_FN(body.user_name);
       res.send(200, slackResponse);
       return next();
     }

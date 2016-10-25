@@ -6,13 +6,28 @@ const R = require('ramda');
 const thunkify = require('thunkify-wrap');
 const request = thunkify(require('request'));
 const req = require('request');
+const constants = require('./constants');
 const HttpError = require('./httpError');
 
 const loginFormPath = '/?no_sso=1';
 const emojiUploadFormPath = '/admin/emoji';
 const emojiUploadImagePath = '/customize/emoji';
 
-const emojiExists = ($, name, i, elem) => $(elem).text().replace(/\s|:|`/g, '') === name;
+const emojiMatches = ($, name, i, elem) => $(elem).text() === name;
+
+function emojiExists(name, emojiPage) {
+  var $ = cheerio.load(emojiPage);
+  const exists = R.curry(emojiMatches)($, name);
+  return $('option', '#emojialias').is(exists);
+}
+
+// BOTH:
+//  - validate that name doesn't exist
+//  - upload
+//  - validate upload
+
+// ALIAS:
+// - validate that alias exists
 
 /**
  * Initialize a new `Slack`.
@@ -22,24 +37,22 @@ function Slack(data) {
   this.opts = data;
 
   /**
-   * Do everything.
+   * Import our emojis to Slack.
    */
   this.import = function *(emojis) {
     this.opts.emojis = emojis;
     console.log('Getting emoji page');
 
     for (var i = 0; i < Object.keys(this.opts.emojis).length; i++) {
-      var e = this.opts.emojis[i];
-      var uploadRes = yield this.upload(e.name, e.src);
-      var $ = cheerio.load(uploadRes);
-      const uploaded = R.curry(emojiExists)($, e.name);
-      var uploadWorked = $('.emoji_row > td:nth-child(2)', '#custom_emoji').is(uploaded);
-      if(!uploadWorked) {
-        throw new HttpError(200, "Error occurred while uploading your requested emoji. Some possible reasons:\
-\n\t- The url must refer to an image\
-\n\t- The image cannot require authentication\
-\n\t- The image cannot be too large\
-\nIf you don't think any of these cases applies to you, give a shout to Molly to let her know something weird is happening! :alarm:");
+      let e = this.opts.emojis[i];
+      let uploadRes;
+      // if(e.alias) {
+        uploadRes = yield this.upload(e.name, e.src, e.alias);
+      // }
+      // uploadRes = yield this.upload(e.name, e.src);
+
+      if(!emojiExists(e.name, uploadRes)) {
+        throw new HttpError(200, constants.EMOJI_ERROR_MESSAGE);
       }
     }
     console.log('Uploaded emojis');
@@ -47,18 +60,12 @@ function Slack(data) {
   };
 
   this.init = function *() {
-    try {
       console.log('Starting import');
       yield this.tokens();
       console.log('Got tokens');
       yield this.login();
       console.log('Logged in');
       yield this.emoji();
-    }
-    catch (e) {
-      console.log('Uh oh! ' + e);
-      throw e;
-    }
   }
 
   /**
@@ -123,8 +130,8 @@ function Slack(data) {
   /**
    * Upload the emoji.
    */
-  this.upload = function *(name, emoji) {
-    console.log('Attempting to upload %s with %s', name, emoji);
+  this.upload = function *(name, emoji, alias) {
+    console.log('Attempting to upload %s with alias[%s] or url[%s]', name, alias, emoji);
     var opts = this.opts;
     var load = {
       url: opts.url + emojiUploadFormPath,
@@ -132,13 +139,12 @@ function Slack(data) {
       method: 'GET'
     };
     var res = yield request(load);
-    var $ = cheerio.load(res[0].body);
-    
-    // TODO: also check non-custom emojis?
-    const alreadyExists = R.curry(emojiExists)($, name);
-    var duplicate = $('.emoji_row > td:nth-child(2)', '#custom_emoji').is(alreadyExists);
-    if(duplicate) {
-      throw new HttpError(200, "Oops, looks like an emoji with that name already exists: :" + name + ": Try again with a different name. :yes2:")
+
+    if(emojiExists(name, res[0].body)) {
+      throw new HttpError(200, constants.EMOJI_EXISTS_ERROR_MESSAGE_FN(name));
+    }
+    if(alias && !emojiExists(alias, res[0].body)) {
+      throw new HttpError(200, constants.ALIAS_DNE_ERROR_MESSAGE);
     }
 
     return new Promise(function(resolve, reject, notify) {
@@ -156,8 +162,15 @@ function Slack(data) {
       form.append('add', '1');
       form.append('crumb', opts.uploadCrumb);
       form.append('name', name);
-      form.append('mode', 'data');
-      form.append('img', req(emoji));
+
+      if(emoji) {
+        form.append('mode', 'data');
+        form.append('img', req(emoji));
+      }
+      else {
+        form.append('mode', 'alias');
+        form.append('alias', alias);
+      }
     }.bind(this));
   };
 
