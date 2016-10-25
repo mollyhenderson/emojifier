@@ -21,17 +21,17 @@ const INVALID_NAME_MESSAGE_FN = name => name + ' is an invalid name. Emoji names
 
 const HELLO_MESSAGE_FN = username => 'Nice to meet you, @' + username + '! :wave: :yay:';
 
-const EMOJI_ERROR_MESSAGE = "Error occurred while uploading your requested emoji. Some possible reasons:\
+const EMOJI_ERROR_MESSAGE = 'Error occurred while uploading your requested emoji. Some possible reasons:\
 \n\t- The url must refer to an image\
 \n\t- The image cannot require authentication\
 \n\t- The image cannot be too large\
-\nIf you don't think any of these cases applies to you, give a shout to Molly to let her know something weird is happening! :alarm:";
+\nIf you don\'t think any of these cases applies to you, give a shout to Molly to let her know something weird is happening! :alarm:';
 
-const ALIAS_ERROR_MESSAGE = "Error occurred while creating your requested alias. I can't think of any reasons why that would happen, so just go ahead and let Molly know so she can :fix_it: :moley:"
+const ALIAS_ERROR_MESSAGE = 'Error occurred while creating your requested alias. I honestly can\'t think of any reasons why that would happen, so just go ahead and let Molly know so she can :fix_it: :moley:'
 
-const EMOJI_EXISTS_ERROR_MESSAGE_FN = name => "Oops, looks like an emoji with that name already exists: :" + name + ": Try again with a different name. :yes2:";
+const EMOJI_EXISTS_ERROR_MESSAGE_FN = name => 'Oops, looks like an emoji with that name already exists: :' + name + ': Try again with a different name. :yes2:';
 
-const ALIAS_DNE_ERROR_MESSAGE = "Looks like the emoji you're trying to alias doesn't exist yet! :scream:\n" + SUGGESTIONS;
+const ALIAS_DNE_ERROR_MESSAGE = 'Looks like the emoji you\'re trying to alias doesn\'t exist yet! :scream:\n' + SUGGESTIONS;
 
 module.exports = {
   SLACK_URL,

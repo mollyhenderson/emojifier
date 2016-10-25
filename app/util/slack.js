@@ -122,7 +122,7 @@ function Slack(data) {
     var res = yield request(load);
     var $ = cheerio.load(res[0].body);
     opts.uploadCrumb = $('#addemoji > input[name="crumb"]').attr('value');
-    console.log("Upload crumb is %s", opts.uploadCrumb);
+    console.log('Upload crumb is %s', opts.uploadCrumb);
     if (!opts.uploadCrumb) throw new Error('Login error: could not get emoji upload crumb for ' + opts.url);
     return this.opts = opts;
   };

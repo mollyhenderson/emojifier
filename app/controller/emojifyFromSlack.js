@@ -25,13 +25,13 @@ function emojifyFromSlack(server) {
       return errorHandler.handleErrorForSlack(err, res, next);
     }
 
-    if(message.type === "help") {
+    if(message.type === 'help') {
       slackResponse.text = constants.HELP_MESSAGE_FN(body.user_name);
       res.send(200, slackResponse);
       return next();
     }
 
-    if(message.type === "hello") {
+    if(message.type === 'hello') {
       slackResponse.text = constants.HELLO_MESSAGE_FN(body.user_name);
       res.send(200, slackResponse);
       return next();

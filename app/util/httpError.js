@@ -5,8 +5,8 @@ function HttpError(statusCode, message) {
   this.message = message;
 }
 HttpError.prototype = Object.create(Error.prototype);
-HttpError.prototype.name = "HttpError";
-HttpError.prototype.message = "";
+HttpError.prototype.name = 'HttpError';
+HttpError.prototype.message = '';
 HttpError.prototype.constructor = HttpError;
 
 module.exports = HttpError;
