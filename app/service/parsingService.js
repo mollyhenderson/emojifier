@@ -5,6 +5,7 @@ const constants = require('../util/constants');
 const HttpError = require('../util/httpError');
 
 function parseSlackMessage(body) {
+  console.log(body);
   // sample body.text: 'emojify <url> as <name>'
   //   or: 'aliasify <existing_emoji> as <name>'
   let messageParts = body.text.split(' ');
