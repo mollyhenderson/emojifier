@@ -7,7 +7,7 @@ const HttpError = require('../util/httpError');
 function parseSlackMessage(body) {
   // sample body.text: 'emojify <url> as <name>'
   //   or: 'aliasify <existing_emoji> as <name>'
-  let messageParts = body.text.split(' ');
+  let messageParts = body.text.split(/\s+/g);
 
   if(messageParts[0] === body.trigger_word) {
     messageParts.shift();
