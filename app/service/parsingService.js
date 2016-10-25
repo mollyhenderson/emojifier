@@ -16,6 +16,10 @@ function parseSlackMessage(body) {
     return {type: "help"};
   }
 
+  if(messageParts[0] === "hello" || messageParts[0] === "hi") {
+    return {type: "hello"};
+  }
+
   if(messageParts.length < 2) {
     throw new HttpError(200, "I'm afraid I don't understand your request, sorry. :shrug_bot:\nTry typing `" + body.trigger_word + " <url> as <emoji_name>`.");
   }

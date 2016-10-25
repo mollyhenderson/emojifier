@@ -33,6 +33,12 @@ function emojifyFromSlack(server) {
       return next();
     }
 
+    if(message.type === "hello") {
+      slackResponse.text = 'Hi there @' + body.user_name + '! :wave: :yay:';
+      res.send(200, slackResponse);
+      return next();
+    }
+
     co(emojiService.emojify(message.emojis))
     .then(
       function(value) {
