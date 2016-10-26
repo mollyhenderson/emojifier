@@ -2,6 +2,7 @@
 
 const cheerio = require('cheerio');
 const co = require('co');
+const path = require('path');
 const R = require('ramda');
 const thunkify = require('thunkify-wrap');
 const request = thunkify(require('request'));
@@ -165,7 +166,8 @@ function Slack(data) {
 
       if(emoji) {
         form.append('mode', 'data');
-        form.append('img', req(emoji));
+        form.append('img', req(path.dirname(process.mainModule.filename) + '/' + name + '.jpg'));
+        // form.append('img', req(emoji));
       }
       else {
         form.append('mode', 'alias');
