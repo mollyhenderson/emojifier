@@ -13,14 +13,6 @@ const loginFormPath = '/?no_sso=1';
 const emojiUploadFormPath = '/admin/emoji';
 const emojiUploadImagePath = '/customize/emoji';
 
-const emojiMatches = ($, name, i, elem) => $(elem).text() === name;
-
-function emojiExists(name, emojiPage) {
-  var $ = cheerio.load(emojiPage);
-  const exists = R.curry(emojiMatches)($, name);
-  return $('option', '#emojialias').is(exists);
-}
-
 /**
  * Initialize a new `Slack`.
  */
@@ -37,14 +29,13 @@ function Slack(data) {
 
     for (var i = 0; i < Object.keys(this.opts.emojis).length; i++) {
       let e = this.opts.emojis[i];
-      let uploadRes;
-      // if(e.alias) {
-        uploadRes = yield this.upload(e.name, e.src, e.alias);
-      // }
-      // uploadRes = yield this.upload(e.name, e.src);
 
-      if(!emojiExists(e.name, uploadRes)) {
-        throw new HttpError(200, constants.EMOJI_ERROR_MESSAGE);
+      const uploadRes = yield this.upload(e.name, e.src, e.alias);
+      var $ = cheerio.load(uploadRes);
+      const error = $('.alert.alert_error', '#page_contents').text();
+
+      if(error) {
+        throw new HttpError(200, constants.SLACK_ERROR_MESSAGE_FN(error.trim()));
       }
     }
     console.log('Uploaded emojis');
@@ -131,13 +122,6 @@ function Slack(data) {
       method: 'GET'
     };
     var res = yield request(load);
-
-    if(emojiExists(name, res[0].body)) {
-      throw new HttpError(200, constants.EMOJI_EXISTS_ERROR_MESSAGE_FN(name));
-    }
-    if(alias && !emojiExists(alias, res[0].body)) {
-      throw new HttpError(200, constants.ALIAS_DNE_ERROR_MESSAGE);
-    }
 
     return new Promise(function(resolve, reject, notify) {
       var opts = this.opts;
