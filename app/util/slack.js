@@ -21,14 +21,6 @@ function emojiExists(name, emojiPage) {
   return $('option', '#emojialias').is(exists);
 }
 
-// BOTH:
-//  - validate that name doesn't exist
-//  - upload
-//  - validate upload
-
-// ALIAS:
-// - validate that alias exists
-
 /**
  * Initialize a new `Slack`.
  */

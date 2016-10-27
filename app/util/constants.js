@@ -4,8 +4,8 @@ const SLACK_URL = process.env.SLACK_URL;
 const SLACK_EMAIL = process.env.SLACK_EMAIL;
 const SLACK_PW = process.env.SLACK_PW;
 
-const EMOJI_TRIGGER = process.env.EMOJI_TRIGGER;
-const ALIAS_TRIGGER = process.env.ALIAS_TRIGGER;
+const EMOJI_TRIGGER = process.env.EMOJI_TRIGGER || 'emojify';
+const ALIAS_TRIGGER = process.env.ALIAS_TRIGGER || 'aliasify';
 
 const SUGGESTIONS = 'Try one of the following:\n\
 - `' + EMOJI_TRIGGER + ' <url> as <name>`\n\
