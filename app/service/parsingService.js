@@ -52,14 +52,7 @@ function parseName(alias) {
 
 function parseUrl(urlString) {
   urlString = urlString.replace(/[<>]/g, '');
-  if(!validUrl(urlString)) {
-    throw new HttpError(200, constants.FILE_FORMAT_ERROR_MESSAGE);
-  }
   return url.parse(urlString);
-}
-
-function validUrl(urlString) {
-  return urlString.match(/\.(jpeg|jpg|png)$/) != null;
 }
 
 function validName(name) {
