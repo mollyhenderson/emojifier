@@ -20,8 +20,7 @@ function* emojify(emojis) {
 }
 
 function resize(urlObject) {
-  return urlObject.href;
-  // return 'http://' + urlObject.host + '.rsz.io' + urlObject.path + '?mode=max&width=128&height=128';
+  return 'http://' + urlObject.host + '.rsz.io' + urlObject.path + '?mode=max&width=128&height=128';
 }
 
 module.exports = {
