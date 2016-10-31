@@ -1,5 +1,10 @@
 'use strict';
 
+const gm = require('gm')
+  , imageMagick = gm.subClass({ imageMagick: true });
+const fs = require('fs');
+const url = require('url');
+
 const cheerio = require('cheerio');
 const co = require('co');
 const R = require('ramda');
@@ -140,8 +145,25 @@ function Slack(data) {
       form.append('name', name);
 
       if(emoji) {
+
+        var dir = 'test.png';
+
+        var imageRequest = req({
+          url: emoji,
+          method: 'GET',
+          jar: opts.jar
+        });
+
+        console.log("image directory: ", process.cwd() + '/' + dir);
+
+        var writeStream = fs.createWriteStream(dir);
+        var graphics = gm(imageRequest)
+        .resize('128', '128')
+        .stream()
+        .pipe(writeStream);
+
         form.append('mode', 'data');
-        form.append('img', req(emoji));
+        form.append('img', req(process.cwd() + '/' + dir));
       }
       else {
         form.append('mode', 'alias');
