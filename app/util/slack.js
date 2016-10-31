@@ -155,6 +155,9 @@ function Slack(data) {
         });
 
         console.log("image directory: ", process.cwd() + '/' + dir);
+        console.log("process.cwd():", process.cwd());
+        console.log("__filename:", __filename);
+        console.log("__dirname:", __dirname);
 
         var writeStream = fs.createWriteStream(dir);
         var graphics = gm(imageRequest)
