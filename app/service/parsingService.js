@@ -9,7 +9,7 @@ function parseSlackMessage(body) {
   //   or: 'aliasify <existing_emoji> as <name>'
   let messageParts = body.text.split(/\s+/g);
 
-  if(messageParts[0] === body.trigger_word) {
+  if(equalsIgnoreCase(messageParts[0], body.trigger_word)) {
     messageParts.shift();
   }
 
@@ -32,7 +32,7 @@ function parseSlackMessage(body) {
     name: emojiName
   };
 
-  const creatingAlias = body.trigger_word === constants.ALIAS_TRIGGER;
+  const creatingAlias = equalsIgnoreCase(body.trigger_word, constants.ALIAS_TRIGGER);
   if(creatingAlias) {
     emoji.alias = otherPart;
   }
@@ -60,6 +60,10 @@ function validName(name) {
     throw new HttpError(200, constants.INVALID_NAME_MESSAGE_FN(name));
   }
   return name;
+}
+
+function equalsIgnoreCase(string1, string2) {
+  return string1.toUpperCase() === string2.toUpperCase();
 }
 
 module.exports = {
