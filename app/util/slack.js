@@ -24,6 +24,10 @@ function Slack(data) {
    * Import our emojis to Slack.
    */
   this.import = function *(emojis) {
+    if(!this.opts.uploadCrumb) {
+      yield this.init();
+    }
+
     this.opts.emojis = emojis;
     console.log('Getting emoji page');
 
@@ -169,8 +173,6 @@ function Slack(data) {
       }
     }.bind(this));
   };
-
-  co(this.init());
 
 }
 
