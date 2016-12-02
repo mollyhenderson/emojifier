@@ -7,11 +7,8 @@ const slackService = require('../service/slackService');
 function validateToken(token) {
   // make sure this call is at least probably coming from our webhook ¯\_(ツ)_/¯
   if(token !== process.env.SLACK_TOKEN) {
-    const slackMessage = {
-      text: 'Sorry, I don\'t really want to talk to you.\n(Your teammate probably didn\'t set up my permissions correctly; go yell at them!)'
-    };
     console.log('Token denied: ', token);
-    throw new HttpError(200, slackMessage);
+    throw new HttpError(200, 'Sorry, I don\'t really want to talk to you.\n(Your teammate probably didn\'t set up my permissions correctly; go yell at them!)');
   }
 }
 
