@@ -20,6 +20,10 @@ function* emojify(emojis) {
 }
 
 function resize(urlObject) {
+  if(urlObject.pathname.match(/^.*\.gif$/)) {
+    // god have mercy on your soul
+    return urlObject.href;
+  }
   return 'http://' + urlObject.host + '.rsz.io' + urlObject.path + '?mode=max&width=128&height=128';
 }
 
