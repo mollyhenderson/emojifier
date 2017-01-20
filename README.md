@@ -14,7 +14,7 @@ $ heroku git:remote -a <your-heroku-url>
 Git remote heroku added.
 ```
 * Sign up as a new user
-* Set up an outgoing webhook for your Slack team (found at https://<your-slack-team-name>.slack.com/apps/manage/custom-integrations)
+* Set up an outgoing webhook for your Slack team (found at `https://<your-slack-team-name>.slack.com/apps/manage/custom-integrations`)
 * Optionally choose a channel for emojifier to listen on
 * If you will be using trigger words, add them in the `Trigger Words` field separated by a comma
 * Set the URL to `https://<your-slack-team-name>.herokuapp.com/slack/emojify`
