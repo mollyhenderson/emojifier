@@ -7,15 +7,17 @@ Suggested improvements:
 * Support emojifying attachments
 
 Setup:
+* Create a heroku app at https://dashboard.heroku.com
 * Clone this repo
-* Create a heroku project:
+* Push the repo up to the heroku app:
 ```bash
 $ heroku git:remote -a <your-heroku-url>
 Git remote heroku added.
+$ git push heroku master
 ```
-* Sign up as a new user
+* Sign up as a new Slack user
 * Set up an outgoing webhook for your Slack team (found at `https://<slack-team-name>.slack.com/apps/manage/custom-integrations`)
-* Optionally choose a channel for emojifier to listen on
+* Optionally choose a channel for Emojifier to listen on
 * If you will be using trigger words, add them in the `Trigger Words` field separated by a comma
 * Set the URL to `https://<your-heroku-url>.herokuapp.com/slack/emojify`
 * Take note of the generated token

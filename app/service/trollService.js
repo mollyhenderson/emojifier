@@ -2,7 +2,7 @@
 
 function troll(response, reqBody) {
   switch(reqBody.user_name) {
-    case 'brad.myers':
+    case 'bread':
       response.icon_emoji = ':smug-trump:';
       break;
     case 'ian.gall':
@@ -11,10 +11,11 @@ function troll(response, reqBody) {
     case 'jayclouse':
       response.icon_emoji = ':juicy:';
       break;
-    case 'james.smith':
+    case 'jrs':
       response.icon_emoji = ':troll:';
       break;
     case 'mason':
+    case 'myson':
       response.icon_emoji = ':dangerzone:';
       break;
     case 'matt.dreiss':
